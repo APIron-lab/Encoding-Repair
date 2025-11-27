@@ -2,7 +2,7 @@
 **Pre-AI Input Tools / Structured Text Hygiene Series**  
 **Base64-Only / Auto Encoding Repair API**
 
-[![CI](https://github.com/APIron-lab/Encoding-Repairactions/workflows/ci.yml/badge.svg)](https://github.com/APIron-lab/Encodeing-Repair/actions/workflows/ci.yml)
+[![CI](https://github.com/APIron-lab/Encoding-Repair/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/APIron-lab/Encoding-Repair/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/APIron-lab/Encoding-Repair/graph/badge.svg?token=x7PCsSMkaE)](https://codecov.io/gh/APIron-lab/Encoding-Repair)
 
 ---
