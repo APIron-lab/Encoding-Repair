@@ -1,0 +1,79 @@
+name: Deploy Encoding Repair API to Lambda
+
+on:
+  # 手動デプロイ
+  workflow_dispatch:
+  # main に変更が入ったとき自動デプロイしたい場合
+  push:
+    branches:
+      - main
+    paths:
+      - "backend/**"
+      - "core/**"
+      - "lambda_http/**"
+      - "requirements.txt"
+      - ".github/workflows/deploy-lambda.yml"
+
+permissions:
+  id-token: write      # OIDC 用
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: ap-northeast-1
+      # ★ Lambda 関数名：コンソールで作った encoding-repair-dev に合わせる
+      LAMBDA_FUNCTION_NAME: encoding-repair-dev
+      ZIP_NAME: encoding-repair-api-v2.0.zip
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # ランタイム用依存関係を build/ にインストール
+      - name: Install runtime dependencies into build dir
+        run: |
+          rm -rf build
+          mkdir -p build
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -t build
+
+      # アプリケーションコードを build/ にコピー
+      - name: Copy application source
+        run: |
+          cp -r backend core lambda_http build/
+
+      # テストはホスト側（site-packages）で実行
+      - name: Install test dependencies and run tests
+        run: |
+          pip install -r requirements.txt
+          pip install pytest httpx
+          pytest
+
+      # デプロイ ZIP 作成
+      - name: Create deployment package
+        working-directory: build
+        run: |
+          zip -r "../${ZIP_NAME}" .
+
+      # OIDC を使って AWS 認証
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::127882229774:role/GitHubActions-OIDC
+          aws-region: ${{ env.AWS_REGION }}
+
+      # Lambda へデプロイ
+      - name: Deploy to Lambda
+        run: |
+          aws lambda update-function-code \
+            --function-name "${LAMBDA_FUNCTION_NAME}" \
+            --zip-file "fileb://${ZIP_NAME}"
+
