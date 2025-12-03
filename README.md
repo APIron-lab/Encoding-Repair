@@ -23,6 +23,24 @@ To ensure perfect accuracy, this API accepts **Base64-encoded byte data**, preve
 
 ---
 
+## 📡 Use This API on RapidAPI
+
+The Encoding Repair API is also available on **RapidAPI**, allowing developers to easily test, authorize, and consume the API through RapidAPI’s integrated platform.
+
+### 🔗 RapidAPI Hub
+https://rapidapi.com/APIronlab/api/encoding-repair-api
+
+### Features Available on RapidAPI
+- One-click endpoint testing  
+- Automatic API-key injection  
+- Free / BASIC / PRO / ULTRA plans  
+- Usage analytics and quota management  
+- Auto-generated code snippets (cURL / Node.js / Python / etc.)
+
+With a RapidAPI account, you can start using the Encoding Repair API immediately.
+
+---
+
 ## 🚀 Endpoint
 
 ### `POST /encoding/v2/repair`
@@ -89,6 +107,25 @@ Encoding Repair API は、**生バイト(Base64)** を入力として受け取�
 - UTF-8 / Shift_JIS / EUC-JP / Latin-1 対応
 - 誤修復防止の Safe Filter 搭載
 - Manual mode による強制デコード
+
+---
+
+## 📡 RapidAPI で利用する
+
+Encoding Repair API は RapidAPI 上でも公開されており、
+APIキー管理・請求・テスト実行などをワンストップで行うことができます。
+
+### 🔗 RapidAPI Hub
+https://rapidapi.com/APIronlab/api/encoding-repair-api
+
+### 利用可能機能
+- ワンクリックでリクエストテスト  
+- APIキー自動注入  
+- 無料/BASIC/PRO/ULTRA の各種プラン  
+- 月次クオータと利用状況の可視化  
+- カール/Node.js/Python などのコードサンプル自動生成  
+
+RapidAPI のアカウントを作成すれば、そのまま **Encoding Repair API を即利用開始**できます。
 
 ---
 
