@@ -95,7 +95,7 @@ The API returns a predictable and stable JSON structure suitable for production 
     "input_bytes_length": 120
   }
 }
-````
+```
 
 ---
 
@@ -140,8 +140,6 @@ Sanitize mixed-encoding datasets common in Japanese business systems.
 ### 5. Web scraping / crawling
 
 Repair inconsistent encodings from multi-domain crawlers.
-
-```
 
 ---
 
@@ -283,7 +281,6 @@ ChatGPT / Claude / Gemini / ローカルLLMに投げる前の
 
 サイトごとに異なるエンコーディングによる乱れを自動補正。
 
-```
 
 ---
 
