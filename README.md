@@ -1,51 +1,42 @@
 # Encoding Repair API (v2.0)
-**Pre-AI Input Tools / Structured Text Hygiene Series**  
-**Base64-Only / Auto Encoding Repair API**
 
-[![CI](https://github.com/APIron-lab/Encoding-Repair/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/APIron-lab/Encoding-Repair/actions/workflows/ci.yml)
+High-accuracy Base64-only encoding repair API for fixing mojibake (garbled text) across UTF-8 / Shift_JIS / EUC-JP / Latin-1 transitions.
+
+[![CI](https://github.com/APIron-lab/Encoding-Repair/actions/workflows/ci.yml/badge.svg)](https://github.com/APIron-lab/Encoding-Repair/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/APIron-lab/Encoding-Repair/graph/badge.svg?token=x7PCsSMkaE)](https://codecov.io/gh/APIron-lab/Encoding-Repair)
 
 ---
 
-## Overview (English)
+## 🌐 Overview
 
-**Encoding Repair API** automatically restores corrupted or mojibake text from raw byte data.  
-To maximize accuracy, this API accepts **only Base64-encoded raw bytes**, ensuring that no information is lost through copy-paste or intermediate application conversions.
+Encoding Repair API restores corrupted text **from raw bytes only**.
 
-This API is designed for:
+To ensure perfect accuracy, this API accepts **Base64-encoded byte data**, preventing information loss that occurs during copy/paste or text-editor conversions.
 
-- Repairing mojibake in CSV / TSV / LOG files  
-- Unifying mixed encodings (UTF-8 / Shift_JIS / EUC-JP / Latin-1)  
-- Fixing broken text caused by system migration or legacy applications  
-- Pre-processing text for Large Language Models (Pre-AI Input Hygiene)
-
-### Key Features
-
-- **Base64-only input**: preserves the original byte sequence  
-- **Auto encoding detection** for UTF-8 / Shift_JIS / EUC-JP / Latin-1  
-- **Safe Filter**: prevents false fixes by returning original data when confidence is low  
-- **Manual mode** allows explicit control over encoding assumptions
+### Key Capabilities
+- Base64-only input (safe, lossless)
+- Automatic encoding detection  
+- UTF-8 / Shift_JIS / EUC-JP / Latin-1 support
+- Safe Filter (prevents incorrect fixes)
+- Manual mode for explicit decoding
+- Unified `result + meta` response (APIron Spec)
 
 ---
 
-## Endpoint
+## 🚀 Endpoint
 
-### POST /encoding/v2/repair
+### `POST /encoding/v2/repair`
 
-**Request Body**
-
+#### Request Example
 ```json
 {
-  "raw_bytes_base64": "<Base64 bytes>",
+  "raw_bytes_base64": "<Base64>",
   "mode": "auto",
   "target_encoding": "utf-8"
 }
 ```
 
----
-
-## Example Response
-
+#### Response Example
 ```json
 {
   "result": {
@@ -58,16 +49,14 @@ This API is designed for:
     "mode_used": "auto",
     "detected_path": "latin1->utf-8",
     "confidence": 0.98,
-    "status": "ok",
-    "execution_ms": 5.42,
-    "input_bytes_length": 9
+    "status": "ok"
   }
 }
 ```
 
 ---
 
-## Python Usage Example
+## 🧪 Python Example
 
 ```python
 import base64, requests
@@ -81,46 +70,37 @@ payload = {
     "target_encoding": "utf-8"
 }
 
-res = requests.post("https://your-api-endpoint/encoding/v2/repair", json=payload)
+res = requests.post("https://your-endpoint/encoding/v2/repair", json=payload)
 print(res.json())
 ```
 
 ---
 
-# 日本語版 README
-
----
+# 🇯🇵 日本語版 README
 
 ## 概要
 
-**Encoding Repair API** は、文字化けしたテキストを **自動修復** する API です。  
-復元精度向上のため、**Base64 の生バイト入力のみ** を受け付けます。
+Encoding Repair API は、**生バイト(Base64)** を入力として受け取り、  
+文字化けしたテキストを安全かつ高精度に復元する API です。
 
-主な用途：
-
-- CSV / TSV / LOG の文字化け修正  
-- UTF-8 / Shift_JIS / EUC-JP / Latin-1 混在データの一括整理  
-- システム移行によるテキスト破損の修復  
-- AIへの入力前処理（Pre-AI Input Hygiene）
-
----
-
-## 特徴
-
-- **Base64 専用入力**で情報欠落を防止  
-- **自動エンコーディング判定**  
-- **誤修復を防ぐ Safe Filter**  
-- 強制指定可能な **Manual mode**
+### 特徴
+- バイト列を完全保持（コピー＆ペーストの情報欠損を防止）
+- 自動エンコーディング判定
+- UTF-8 / Shift_JIS / EUC-JP / Latin-1 対応
+- 誤修復防止の Safe Filter 搭載
+- Manual mode による強制デコード
 
 ---
 
 ## エンドポイント
 
-### POST /encoding/v2/repair
+### `POST /encoding/v2/repair`
+
+#### リクエスト例
 
 ```json
 {
-  "raw_bytes_base64": "<Base64エンコード済みバイト列>",
+  "raw_bytes_base64": "<Base64>",
   "mode": "auto",
   "target_encoding": "utf-8"
 }
@@ -128,7 +108,7 @@ print(res.json())
 
 ---
 
-## Python使用例
+## Python 使用例
 
 ```python
 import base64, requests
@@ -142,9 +122,12 @@ payload = {
     "target_encoding": "utf-8"
 }
 
-res = requests.post("https://your-api-endpoint/encoding/v2/repair", json=payload)
+res = requests.post("https://your-endpoint/encoding/v2/repair", json=payload)
 print(res.json())
 ```
 
 ---
+
+Maintainer: APIron-lab  
+GitHub: https://github.com/APIron-lab/Encoding-Repair
 
