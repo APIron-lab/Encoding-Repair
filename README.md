@@ -74,6 +74,77 @@ With a RapidAPI account, you can start using the Encoding Repair API immediately
 
 ---
 
+## Response JSON Structure
+
+The API returns a predictable and stable JSON structure suitable for production workflows.
+
+```json
+{
+  "result": {
+    "fixed_text": "string",
+    "target_encoding": "string",
+    "changed": false
+  },
+  "meta": {
+    "version": "2.0.0",
+    "mode_used": "auto | force",
+    "detected_path": "utf-8>shift_jis",
+    "confidence": 1.0,
+    "status": "ok",
+    "execution_ms": 12.41,
+    "input_bytes_length": 120
+  }
+}
+````
+
+---
+
+## Supported Encodings
+
+Encoding Repair API supports a wide range of encodings frequently involved in mojibake issues.
+
+| Encoding                     | Notes                                                 |
+| ---------------------------- | ----------------------------------------------------- |
+| **UTF-8**                    | Modern standard; autobias for Japanese workloads      |
+| **Shift_JIS (SJIS / CP932)** | Legacy Japanese encoding used in Windows applications |
+| **EUC-JP**                   | Unix-origin Japanese encoding                         |
+| **ISO-2022-JP**              | Email-safe Japanese encoding (JIS)                    |
+| **UTF-16 / UTF-32**          | BOM-aware detection is supported                      |
+| **ASCII**                    | Auto-normalized                                       |
+| **Other rare encodings**     | Internally handled through multi-phase heuristics     |
+
+---
+
+## Use Cases
+
+### 1. Repairing Japanese mojibake
+
+Fix broken text from:
+
+* Legacy systems
+* SJIS → UTF-8 migration
+* Corrupted file imports
+
+### 2. Restoring text from raw bytes
+
+Useful when only the byte sequence is available (scraped data, logs, email archives).
+
+### 3. Pre-processing for LLM pipelines
+
+Normalize text to UTF-8 before feeding ChatGPT / Claude / Gemini or local LLMs.
+
+### 4. CSV / TSV / Excel imports
+
+Sanitize mixed-encoding datasets common in Japanese business systems.
+
+### 5. Web scraping / crawling
+
+Repair inconsistent encodings from multi-domain crawlers.
+
+```
+
+---
+
 ## 🧪 Python Example
 
 ```python
@@ -141,6 +212,77 @@ RapidAPI のアカウントを作成すれば、そのまま **Encoding Repair A
   "mode": "auto",
   "target_encoding": "utf-8"
 }
+```
+
+## レスポンス構造（JSON）
+
+本APIは、運用システムでも扱いやすい **安定した2階層構造（result + meta）** を返却します。
+
+```json
+{
+  "result": {
+    "fixed_text": "string",
+    "target_encoding": "string",
+    "changed": false
+  },
+  "meta": {
+    "version": "2.0.0",
+    "mode_used": "auto | force",
+    "detected_path": "utf-8>shift_jis",
+    "confidence": 1.0,
+    "status": "ok",
+    "execution_ms": 12.41,
+    "input_bytes_length": 120
+  }
+}
+````
+
+---
+
+## 対応エンコーディング一覧
+
+Encoding Repair API は、日本語環境で頻出する主要エンコーディングを幅広くサポートしています。
+
+| エンコーディング                    | 説明                    |
+| --------------------------- | --------------------- |
+| **UTF-8**                   | 現代標準。日本語に最適化された判定ロジック |
+| **Shift_JIS（SJIS / CP932）** | Windows系レガシー環境で多用     |
+| **EUC-JP**                  | Unix系・業務システムで使用       |
+| **ISO-2022-JP（JIS）**        | メール系アプリで利用される可変エンコード  |
+| **UTF-16 / UTF-32**         | BOM判定を含む安全復元          |
+| **ASCII**                   | 部分的な混在データにも対応         |
+| **その他の稀なエンコード**             | 多段階ヒューリスティックにより内部処理   |
+
+---
+
+## 利用シーン（Use Cases）
+
+### 1. 日本語の文字化け修復
+
+以下のようなシナリオで効果的です：
+
+* システム移行（SJIS → UTF-8 など）
+* 古い基幹システムのCSV/TSVログ
+* Windows / Unix 混在環境のデータ破損
+
+### 2. 生バイト列からのテキスト復元
+
+スクレイピング、メールアーカイブ、ログ収集など
+**「テキストではなくバイトデータしか無い」** という場面に対応。
+
+### 3. LLM 事前処理（Pre-AI Input Hygiene）
+
+ChatGPT / Claude / Gemini / ローカルLLMに投げる前の
+**UTF-8 正規化工程** として最適。
+
+### 4. CSV / TSV / Excel 読み込み前のクリーニング
+
+日本の業務システムに多い「混在エンコード」を安全に一本化。
+
+### 5. Webスクレイピング / クローリング
+
+サイトごとに異なるエンコーディングによる乱れを自動補正。
+
 ```
 
 ---
